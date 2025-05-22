@@ -1,10 +1,17 @@
 # Rename as .env, pick one environment and fill your values
 
-# Google AI Studio
-GOOGLE_GENAI_USE_VERTEXAI=FALSE
-GOOGLE_API_KEY=PASTE_YOUR_ACTUAL_API_KEY_HERE
 
-# Google Cloud Vertex AI
-GOOGLE_GENAI_USE_VERTEXAI=TRUE
-GOOGLE_CLOUD_PROJECT=YOUR_PROJECT_ID
-GOOGLE_CLOUD_LOCATION=LOCATION
+# Choose Model Backend: 0 -> ML Dev, 1 -> Vertex
+GOOGLE_GENAI_USE_VERTEXAI=1
+
+# ML Dev backend config. Fill if using Ml Dev backend.
+GOOGLE_API_KEY=YOUR_VALUE_HERE
+
+# Vertex backend config
+GOOGLE_CLOUD_PROJECT=YOUR_VALUE_HERE
+GOOGLE_CLOUD_LOCATION=YOUR_VALUE_HERE
+
+
+BQ_PROJECT_ID=YOUR_VALUE_HERE
+BQ_DATASET_ID='forecasting_sticker_sales'
+
