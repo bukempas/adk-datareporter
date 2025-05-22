@@ -1,59 +1,44 @@
-import vertexai
-from vertexai.generative_models import (
-    Content,
-    FunctionDeclaration,
-    GenerationConfig,
-    GenerativeModel,
-    Part,
-    Tool,
-)
-list_dataset = FunctionDeclaration(
-    name="list_dataset",
-    description="List all datasets in the project",
-    parameters={
-        "type":"object",
-        "properties":{
-            "project_id": {"type": "string"},
-    },
-  },
-)
-list_tables=FunctionDeclaration(
-    name="list_tables",
-    description="List all tables in the dataset",
-    parameters={
-        "type":"object",
-        "properties":{
-            "dataset_id": {
-                "type": "string",
-                "description":"The ID of the dataset to list tables from"},
-    },
-        "required":["dataset_id"],
-  }
-)
-get_table=FunctionDeclaration(
-    name="get_table",
-    description="Get a table from a dataset",
-    parameters={
-        "type":"object",
-        "properties":{
-            "table_id": {
-                "type": "string",
-                "description":"The ID of the table to get"},
-        },
-        "required":["table_id"],
+import os
+from google.adk.code_executors import VertexAiCodeExecutor
+from google.adk.agents import Agent
 
-    },
-)
-sql_agent=FunctionDeclaration(
-    name="sql_agent",
-    description="Get information from data in BigQuery using SQL queries",
-    parameters={
-        "type":"object",
-        "properties":{
-               "query": {
-                 "type": "string",
-                 "description":"SQL query on a single line that will help give quantitative answers to the user's question when run on a BigQuery dataset and table. In the SQL query, always use the fully qualified dataset and table names."},
-            },
-        "required":["query"],
-    },
+    def get_data(self, query: str):
+        """
+        Connects to BigQuery, executes a query, and retrieves the results.
+
+        Args:
+            query: The SQL query string to execute.
+
+        Returns:
+            A pandas DataFrame containing the query results, or None if an error occurs.
+        """
+        if not self.client:
+            print("BigQuery client is not initialized. Cannot get data.")
+            return None
+
+        print(f"BigQueryAgent executing query: {query}")
+
+        try:
+            # Execute the query
+            query_job = self.client.query(query)
+
+            # Wait for the job to complete and get the results
+            results = query_job.result()
+
+            # Convert the results to a pandas DataFrame
+            dataframe = results.to_dataframe()
+
+            print("Data retrieved successfully from BigQuery.")
+            return dataframe
+
+        except Exception as e:
+            print(f"Error executing BigQuery query or retrieving data: {e}")
+            return None
+            
+root_agent = Agent(
+    name="query_agent",
+    model="gemini-2.0-flash",
+    description="Agent to answer questionswith queries in the Bigquery dataset .",
+    instruction=instruction_prompt,
+    tools=[location_to_lat_long, lat_long_to_weather]
 )
