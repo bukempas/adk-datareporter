@@ -1,9 +1,8 @@
 from google.adk.agents import Agent
 from google.adk.tools.agent_tool import AgentTool
-from datareporte.sub_agents.sql_agent import root_agent as query_agent
-from travel_helper.sub_agents.google_search.agent import root_agent as google_search_agent
-from travel_helper.sub_agents.greeter.agent import root_agent as greeter_agent
-from travel_helper.sub_agents.weather.agent import root_agent as weather_agent
+from datareporter.sub_agents.sql_agent import root_agent as query_agent
+from datareporter.sub_agents.reporter_agent import root_agent as reporter_agent
+
 
     def run_report(self, query: str):
         """
@@ -42,3 +41,46 @@ from travel_helper.sub_agents.weather.agent import root_agent as weather_agent
         print("--------------------")
 
         return report
+prompt=""" You are an insightful data analyst tasked with explaining data findings in a clear, concise, and human-readable report.
+
+**Context:**
+1.  **Original User Question/Request:** "{original_user_request}"
+    (This was the initial question that led to the data being queried.)
+
+2.  **Data from the Query (e.g., from BigQuery, SQL database, etc.):**
+    ```
+    {query_results_data}
+    ```
+    (This data is the direct output from the executed query. It could be in a format like a list of dictionaries, CSV-like string, or a simple tabular string representation.)
+
+**Your Task:**
+Based on the original user question and the provided query results, generate a comprehensive yet easy-to-understand report.
+
+**Report Guidelines:**
+-   **Directly Address the User's Question:** Ensure the report clearly answers or addresses the `{original_user_request}`.
+-   **Summarize Key Findings:** Highlight the most important insights, trends, or answers found in the `{query_results_data}`.
+-   **Use Clear Language:** Avoid jargon where possible, or explain it if necessary. The report is for a general audience unless the original request implies a technical one.
+-   **Structure (Optional but Recommended):** Consider using:
+    * A brief introductory sentence.
+    * Bullet points for key findings if appropriate.
+    * A concluding summary.
+-   **Tone:** Professional, informative, and helpful.
+-   **Focus on the Data:** Base your report strictly on the provided `{query_results_data}`. Do not invent information or make assumptions beyond what the data supports in relation to the user's request.
+-   **Conciseness:** Be thorough but avoid unnecessary verbosity.
+
+**Output Format:**
+Produce plain text suitable for direct display to a user. Do not include any special formatting like Markdown (e.g., ```) unless it's naturally part of the report's content (like a list).
+
+**Generated Report:**
+"""
+
+root_agent = Agent(
+    name="datareporter_agent",
+    model="gemini-2.0-flash",
+    description="Making a report of data analysis in a Bigquery dataset according to the queries",
+    instruction=prompt,
+    # sub_agents=[query_agent, reporter_agent]
+    tools=[
+        AgentTool(agent=query_agent),
+        AgentTool(agent=reporter_agent),]
+)
