@@ -1,0 +1,9 @@
+sqlquery_tool=Tool(
+    function_declarations=[
+        list_dataset,
+        list_tables,
+        get_table,
+        sql_agent,
+        reporter_agent,
+    ],
+)
