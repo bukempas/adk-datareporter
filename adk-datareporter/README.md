@@ -1,4 +1,6 @@
-# ADK Data Reporter
+# ADK Data Reporter #VertexAISprint
+
+# "Google Cloud credits are provided for this project."
 
 ## Overview
 
@@ -160,3 +162,5 @@ This typically means:
 - If running in a Google Cloud environment (like Compute Engine, Cloud Run, etc.), the service account associated with that resource has the necessary IAM permissions for BigQuery (e.g., BigQuery Data Viewer and BigQuery Job User roles at a minimum).
 
 Refer to the [Google Cloud authentication documentation](https://cloud.google.com/docs/authentication/provide-credentials-adc) for more details.
+
+
