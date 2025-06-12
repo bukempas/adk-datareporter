@@ -1,6 +1,6 @@
 # ADK Data Reporter #VertexAISprint
 
-# "Google Cloud credits are provided for this project."
+"Google Cloud credits are provided for this project."
 
 ## Overview
 
