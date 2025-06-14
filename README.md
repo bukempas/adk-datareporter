@@ -1,4 +1,4 @@
-# ADK Data Reporter #VertexAISprint
+# ADK Data Reporter #VertexAISprint #AISprint
 
 "Google Cloud credits are provided for this project."
 
